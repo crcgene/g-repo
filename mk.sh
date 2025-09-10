@@ -91,6 +91,7 @@ while IFS= read -r line || [[ -n "$line" ]]; do
 
 
     # Copy package to script's dir
+    mkdir -p "$SCRIPT_DIR/$repo_arch"
     cp -n "$CACHE_DIR/$filename" "$SCRIPT_DIR/$repo_arch"
 
     # Copy .sig if exists
