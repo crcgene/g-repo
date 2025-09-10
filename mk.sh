@@ -53,6 +53,8 @@ while IFS= read -r line || [[ -n "$line" ]]; do
         continue
     fi
 
+    echo "$repo / $pkg"
+
     if printf '%s\n' "${REPO_LIST[@]}" | grep -Fxq -- "$repo"; then
         echo "Skipping: Repo $repo not found in pacman.conf\n"
         continue    
