@@ -82,8 +82,8 @@ while IFS= read -r line || [[ -n "$line" ]]; do
     fi
 
     # Download the package (and .sig if available) to cache
-    if ! pacman -Sw --noconfirm "$repo_pkg" &> /dev/null; then
-        echo "Skipping: Failed to download $repo_pkg"
+    if ! pacman -Sw --noconfirm "$repo_n_pkg" &> /dev/null; then
+        echo "Skipping: Failed to download $repo_n_pkg"
         continue
     fi
 
