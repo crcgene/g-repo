@@ -8,13 +8,12 @@
 # Script can be run from any directory; works relative to its own location.
 
 set -euo pipefail  # Strict mode for better error handling
-shopt -s nullglob  # Can use * in file pattern
 
 # Get the directory of the script
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 CUSTOM_REPO=$(basename "$SCRIPT_DIR")
-DB_FILE="$SCRIPT_DIR/$CUSTOM_REPO.db.tar.xz"
+DB_FILE="$CUSTOM_REPO.db.tar.xz"
 PKGS_FILE="$SCRIPT_DIR/pkgs2copy.txt"
 CACHE_DIR=$(pacman -Dv | grep Cache | awk '{print $3}' | sed 's|/$||')
 ARCH=$(uname -m)
@@ -75,8 +74,10 @@ while IFS= read -r line || [[ -n "$line" ]]; do
         continue
     fi
 
+    repo_arch=$(pacman -Si "$repo_n_pkg" | awk -F' *: *' '/Architecture/ {print $2; exit}')
+
     # Check if file already exists in script's dir
-    if [ -f "$SCRIPT_DIR/$filename" ]; then
+    if [ -f "$SCRIPT_DIR/$repo_arch/$filename" ]; then
         continue
     fi
 
@@ -88,17 +89,18 @@ while IFS= read -r line || [[ -n "$line" ]]; do
         continue
     fi
 
+
     # Copy package to script's dir
-    cp -n "$CACHE_DIR/$filename" "$SCRIPT_DIR"
+    cp -n "$CACHE_DIR/$filename" "$SCRIPT_DIR/$repo_arch"
 
     # Copy .sig if exists
     sig_file="$filename.sig"
     if [ -f "$CACHE_DIR/$sig_file" ]; then
-        cp -n "$CACHE_DIR/$sig_file" "$SCRIPT_DIR"
+        cp -n "$CACHE_DIR/$sig_file" "$SCRIPT_DIR/$repo_arch"
     fi
 
     # Add to local repo DB with --prevent-downgrade
-    repo-add --prevent-downgrade "$DB_FILE" "$SCRIPT_DIR/$filename"
+    repo-add --prevent-downgrade "$SCRIPT_DIR/$repo_arch/$DB_FILE" "$SCRIPT_DIR/$repo_arch/$filename"
 
     new_files_added=1
 
@@ -109,4 +111,4 @@ done < "$PKGS_FILE"
 
 (( new_files_added == 0 )) && echo "No new packages have been added"
 
-rm "$SCRIPT_DIR/*.old"
+find "$SCRIPT_DIR" -type f -name '*.old' -print -delete
