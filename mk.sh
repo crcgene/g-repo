@@ -13,7 +13,7 @@ set -euo pipefail  # Strict mode for better error handling
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 CUSTOM_REPO=$(basename "$SCRIPT_DIR")
-DB_FILE="$CUSTOM_REPO.db.tar.xz"
+DB_FILE="$CUSTOM_REPO.db.tar.zst"
 PKGS_FILE="$SCRIPT_DIR/pkgs2copy.txt"
 CACHE_DIR=$(pacman -Dv | grep Cache | awk '{print $3}' | sed 's|/$||')
 ARCH=$(uname -m)
