@@ -106,4 +106,4 @@ while IFS= read -r line || [[ -n "$line" ]]; do
 
 done < "$PKGS_FILE"
 
-(( flag == 0 )) && echo "No new packages have been added"
+(( new_files_added == 0 )) && echo "No new packages have been added"
