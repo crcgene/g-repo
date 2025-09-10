@@ -35,7 +35,10 @@ if [ ! -f "$PKGS_FILE" ]; then
 fi
 
 # Protect from being run in system dirs
-if [[ "$CUSTOM_REPO" == "root" || "$CUSTOM_REPO" == "usr" ]]
+if [[ "$CUSTOM_REPO" == "root" || "$CUSTOM_REPO" == "usr" ]]; then
+    echo "Error: create separated folder for repo"
+    exit 1
+fi
 
 new_files_added=0
 
