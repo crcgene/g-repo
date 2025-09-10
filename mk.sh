@@ -52,27 +52,27 @@ while IFS= read -r line || [[ -n "$line" ]]; do
     IFS=/ read -r repo pkg <<< "$repo_n_pkg"; repo="${repo// /}"; pkg="${pkg// /}";
 
     if [[ "$repo" == "$CUSTOM_REPO" ]]; then
-        echo "Skipping: $repo_n_pkg refers to the repo currently being assembled\n"
+        echo "Skipping: $repo_n_pkg refers to the repo currently being assembled"
         continue
     fi
 
     echo "$repo / $pkg"
 
-    if printf '%s\n' "${REPO_LIST[@]}" | grep -Fxq -- "$repo"; then
-        echo "Skipping: Repo $repo not found in pacman.conf\n"
+    if ! printf '%s\n' "${REPO_LIST[@]}" | grep -Fxq -- "$repo"; then
+        echo "Skipping: Repo $repo not found in pacman.conf"
         continue    
     fi
 
     # Get the filename of the latest package version
     filename=$(pacman -Sp --print-format "%f" "$repo_n_pkg" 2>/dev/null || true)
     if [[ -z "$filename" ]]; then
-        echo "Skipping: Package $pkg not found in repository $repo\n"
+        echo "Skipping: Package $pkg not found in repository $repo"
         continue
     fi
 
     # Check if supported extension
     if [[ ! "$filename" =~ \.pkg\.tar\.(zst|xz)$ ]]; then
-        echo "Skipping: Unsupported package format for $filename (only .pkg.tar.zst or .pkg.tar.xz)\n"
+        echo "Skipping: Unsupported package format for $filename (only .pkg.tar.zst or .pkg.tar.xz)"
         continue
     fi
 
@@ -83,7 +83,7 @@ while IFS= read -r line || [[ -n "$line" ]]; do
 
     # Download the package (and .sig if available) to cache
     if ! pacman -Sw --noconfirm "$repo_pkg" &> /dev/null; then
-        echo "Skipping: Failed to download $repo_pkg\n"
+        echo "Skipping: Failed to download $repo_pkg"
         continue
     fi
 
@@ -102,7 +102,7 @@ while IFS= read -r line || [[ -n "$line" ]]; do
     new_files_added=1
 
     # Output message
-    echo "New package added $filename\n"
+    echo "New package added $filename"
 
 done < "$PKGS_FILE"
 
