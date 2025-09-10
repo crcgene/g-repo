@@ -62,7 +62,7 @@ while IFS= read -r line || [[ -n "$line" ]]; do
     fi
 
     # Get the filename of the latest package version
-    filename=$(pacman -Sp --print-format "%f" "$repo_n_pkg" 2>/dev/null || true)
+    filename=$(pacman -Spd --print-format "%f" "$repo_n_pkg" 2>/dev/null || true)
     if [[ -z "$filename" ]]; then
         echo "Skipping: Package $pkg not found in repository $repo"
         continue
