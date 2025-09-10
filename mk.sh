@@ -49,7 +49,7 @@ while IFS= read -r line || [[ -n "$line" ]]; do
     fi
 
     repo_n_pkg="$line"  # <repo>/<pkg>
-    read -r repo pkg <<< "$repo_n_pkg"; repo="${repo// /}"; pkg="${pkg// /}";
+    IFS=/ read -r repo pkg <<< "$repo_n_pkg"; repo="${repo// /}"; pkg="${pkg// /}";
 
     if [[ "$repo" == "$CUSTOM_REPO" ]]; then
         echo "Skipping: $repo_n_pkg refers to the repo currently being assembled\n"
