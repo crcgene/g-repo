@@ -112,4 +112,4 @@ done < "$PKGS_FILE"
 
 (( new_files_added == 0 )) && echo "No new packages have been added"
 
-find "$SCRIPT_DIR" -type f -name '*.old' -print -delete
+find "$SCRIPT_DIR" -type f -name '*.old' -delete
