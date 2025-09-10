@@ -56,8 +56,6 @@ while IFS= read -r line || [[ -n "$line" ]]; do
         continue
     fi
 
-    echo "$repo / $pkg"
-
     if ! printf '%s\n' "${REPO_LIST[@]}" | grep -Fxq -- "$repo"; then
         echo "Skipping: Repo $repo not found in pacman.conf"
         continue    
@@ -81,8 +79,10 @@ while IFS= read -r line || [[ -n "$line" ]]; do
         continue
     fi
 
+    echo "Downloading $repo_n_pkg..."
+
     # Download the package (and .sig if available) to cache
-    if ! pacman -Sw --noconfirm "$repo_n_pkg" &> /dev/null; then
+    if ! pacman -Swd --noconfirm "$repo_n_pkg" &> /dev/null; then
         echo "Skipping: Failed to download $repo_n_pkg"
         continue
     fi
