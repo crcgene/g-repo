@@ -8,6 +8,7 @@
 # Script can be run from any directory; works relative to its own location.
 
 set -euo pipefail  # Strict mode for better error handling
+shopt -s nullglob  # Can use * in file pattern
 
 # Get the directory of the script
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
