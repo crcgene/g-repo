@@ -107,3 +107,5 @@ while IFS= read -r line || [[ -n "$line" ]]; do
 done < "$PKGS_FILE"
 
 (( new_files_added == 0 )) && echo "No new packages have been added"
+
+rm "$SCRIPT_DIR/*.old"
