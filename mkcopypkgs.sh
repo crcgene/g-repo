@@ -110,6 +110,8 @@ while IFS= read -r line || [[ -n "$line" ]]; do
 
 done < "$PKGS_FILE"
 
-(( "$new_pkg_added" = false )) && echo "No new packages have been added"
+if [[ "$new_pkg_added" = false ]]; then
+  echo "No new packages have been added"
+fi
 
 find "$SCRIPT_DIR" -type f -name '*.old' -delete

@@ -61,7 +61,7 @@ for pkgdir in "$AUR_DIR"/* ; do
     # update repository database
     db_path="$repo_arch_dir/$DB_FILE"
     pkg_path="$repo_arch_dir/$fname"
-    if repo-add --prevent-downgrade "$db_path" "$pkg_path"; then
+    if repo-add --prevent-downgrade --skipchecksums "$db_path" "$pkg_path"; then
       echo "New package added $pkgname"
       new_pkg_added=true
     else
@@ -73,3 +73,5 @@ done
 if [[ "$new_pkg_added" = false ]]; then
   echo "No new packages have been added"
 fi
+
+find "$SCRIPT_DIR" -type f -name '*.old' -delete
