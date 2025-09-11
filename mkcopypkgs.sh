@@ -40,7 +40,7 @@ if [[ "$CUSTOM_REPO" == "root" || "$CUSTOM_REPO" == "usr" ]]; then
     exit 1
 fi
 
-new_files_added=0
+new_pkg_added=false
 
 # Read each line from pkgs2copy.txt
 while IFS= read -r line || [[ -n "$line" ]]; do
@@ -103,13 +103,13 @@ while IFS= read -r line || [[ -n "$line" ]]; do
     # Add to local repo DB with --prevent-downgrade
     repo-add --prevent-downgrade "$SCRIPT_DIR/$repo_arch/$DB_FILE" "$SCRIPT_DIR/$repo_arch/$filename"
 
-    new_files_added=1
+    new_pkg_added=true
 
     # Output message
     echo "New package added $filename"
 
 done < "$PKGS_FILE"
 
-(( new_files_added == 0 )) && echo "No new packages have been added"
+(( "$new_pkg_added" = false )) && echo "No new packages have been added"
 
 find "$SCRIPT_DIR" -type f -name '*.old' -delete
