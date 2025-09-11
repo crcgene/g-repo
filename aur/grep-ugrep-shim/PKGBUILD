@@ -8,11 +8,11 @@ arch=('any')
 license=('custom')
 provides=('grep')
 conflicts=('grep')
-depends=('ugrep')
 source=()
 sha512sums=('SKIP')
 
 package() {
+    depends=('ugrep')
     mkdir -p "$pkgdir/usr/bin"
     ln -s /usr/bin/ug "$pkgdir/usr/bin/grep"
     ln -s /usr/bin/ug "$pkgdir/usr/bin/egrep"
