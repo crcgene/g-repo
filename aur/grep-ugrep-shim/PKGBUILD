@@ -1,0 +1,20 @@
+# Maintainer: Croco Gene <crocogene[at]gmail[dot]com>
+pkgname=grep-ugrep-shim
+pkgver=0.1
+pkgrel=1
+pkgdesc='grep to ugrep compatibility package'
+url='https://github.com/crocogene/artix.git'
+arch=('any')
+license=('custom')
+provides=('grep')
+conflicts=('grep')
+depends=('ugrep')
+source=()
+sha512sums=('SKIP')
+
+package() {
+    mkdir -p "$pkgdir/usr/bin"
+    ln -s /usr/bin/ug "$pkgdir/usr/bin/grep"
+    ln -s /usr/bin/ug "$pkgdir/usr/bin/egrep"
+    ln -s /usr/bin/ug "$pkgdir/usr/bin/fgrep"
+}

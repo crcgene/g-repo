@@ -1,0 +1,31 @@
+# Maintainer: Croco Gene <crocogene[at]gmail[dot]com>
+pkgname=gzip-pigz-shim
+pkgver=0.1
+pkgrel=1
+pkgdesc='gzip to pigz compatibility package'
+url='https://github.com/crocogene/artix.git'
+arch=('any')
+license=('custom')
+provides=('gzip')
+conflicts=('gzip')
+depends=('pigz')
+source=("https://ftp.gnu.org/gnu/gzip/gzip-1.14.tar.xz")
+sha512sums=('SKIP')
+
+prepare() {
+    cd "$srcdir"
+    mkdir -p scripts
+    tar -xJf "gzip-1.14.tar.xz" --strip-components=1 -C scripts $(tar -tf "gzip-1.14.tar.xz" | grep -E '(^|/)z.*\.in$')
+}
+
+package() {
+    mkdir -p "$pkgdir/usr/bin"
+    ln -s /usr/bin/pigz "$pkgdir/usr/bin/gzip"
+    ln -s /usr/bin/pigz "$pkgdir/usr/bin/gunzip"
+    ln -s /usr/bin/pigz "$pkgdir/usr/bin/uncompress"
+    cd "$srcdir/scripts"
+    for script in z*.in; do
+        script_name="${script%.in}"  
+        install -Dm755 "$script" "$pkgdir/usr/bin/$script_name" 
+    done    
+}
