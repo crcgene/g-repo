@@ -19,7 +19,7 @@ case "$CUSTOM_REPO" in
         echo "Error: can't run in current folder" && exit 1;;
 esac
 bash "$SCRIPT_DIR/copypkgs.sh"
-base "$SCRIPT_DIR/mkaurs.sh"
+bash "$SCRIPT_DIR/mkaurs.sh"
 
 
 
