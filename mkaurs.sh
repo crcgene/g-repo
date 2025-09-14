@@ -70,7 +70,7 @@ for pkgdir in "$AUR_DIR"/* ; do
     # update repository database
     db_path="$repo_arch_dir/$DB_FILE"
     pkg_path="$repo_arch_dir/$fname"
-    if repo-add --prevent-downgrade --skipchecksums "$db_path" "$pkg_path"; then
+    if repo-add --prevent-downgrade "$db_path" "$pkg_path"; then
       echo "New package added $pkgname"
       new_pkg_added=true
     else
