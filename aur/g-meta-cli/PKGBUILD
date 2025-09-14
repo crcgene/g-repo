@@ -1,0 +1,37 @@
+pkgname=g-meta-cli
+pkgver=1
+pkgrel=1
+pkgdesc="Various terminal tools"
+arch=('any')
+license=('GPL')
+depends=(
+    opendoas  #sudo alternative
+    moor      #pager
+    systeroid #sysctl alternative
+    dust      #du alternative
+    bat       #cat alternative
+    lsd       #ls alternative
+    sd        #sed alternative
+    fd        #find alternative
+    fzf
+    jq
+    memy      #<-fast/zoxide = собирать самому https://github.com/andrewferrier/memy
+    tmux      
+    terminus-font    # Artix версия - тут nerd ?
+    rsync
+    git
+    whois
+    openssh
+    zsh
+
+
+    nethogs
+    syncthing
+    tailscale
+    sbcl
+    rclone
+    p7zip
+    smartmontools
+    beets
+    ldns
+)

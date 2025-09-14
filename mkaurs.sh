@@ -1,13 +1,15 @@
 #!/usr/bin/env bash
-# update-repo.sh
+
 # Build packages from AUR and update local repository
 
-# Absolute path to the directory where this script is located
+set -euo pipefail  # Strict mode for better error handling
+
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 CUSTOM_REPO=$(basename "$SCRIPT_DIR")
 DB_FILE="$CUSTOM_REPO.db.tar.zst"
 AUR_DIR="$SCRIPT_DIR/aur"
+ARCH=$(uname -m)
 
 set -u
 shopt -s nullglob
@@ -16,6 +18,8 @@ if [[ ! -d "$AUR_DIR" ]]; then
   echo "Error: AUR directory not found: $AUR_DIR" >&2
   exit 1
 fi
+
+echo "=== Making AURs ==="
 
 new_pkg_added=false
 
@@ -43,7 +47,12 @@ for pkgdir in "$AUR_DIR"/* ; do
       continue
     fi
 
-    repo_arch_dir="$SCRIPT_DIR/$pkgarch"
+    if [[ "$pkgarch" = "any" ]]; then
+      repo_arch_dir="$SCRIPT_DIR/$ARCH"
+    else
+      repo_arch_dir="$SCRIPT_DIR/$pkgarch"
+    fi
+
     mkdir -p "$repo_arch_dir"
 
     # skip if the package already exists

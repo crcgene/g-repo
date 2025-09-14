@@ -1,15 +1,10 @@
 #!/usr/bin/env bash
 
 # Script to automate creating a local Arch Linux repository by copying latest built packages
-# from specified repositories in pacman.conf, based on pkgs2copy.txt file.
-# Each line in pkgs2copy.txt: <repo>/<pkg>
-# Downloads package and .sig using pacman -Sw, copies to script's dir if not exists,
-# adds to custom-repo.db.tar.xz with --prevent-downgrade, outputs message if added.
-# Script can be run from any directory; works relative to its own location.
+# from other repositories, based on pkgs2copy.txt file.
 
 set -euo pipefail  # Strict mode for better error handling
 
-# Get the directory of the script
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 CUSTOM_REPO=$(basename "$SCRIPT_DIR")
@@ -20,25 +15,12 @@ ARCH=$(uname -m)
 ARCH_LIST=$(pacman-conf Architecture | sed 's/&//')
 REPO_LIST=$(pacman-conf --repo-list | grep -v "^$CUSTOM_REPO$") 
 
-# Check if required tools are available
-if ! command -v pacman &> /dev/null; then
-    echo "Error: pacman not found. This script requires pacman"
-    exit 1
-fi
-if ! command -v repo-add &> /dev/null; then
-    echo "Error: repo-add not found. Install pacman-contrib"
-    exit 1
-fi
 if [ ! -f "$PKGS_FILE" ]; then
     echo "Error: $PKGS_FILE not found in script's directory"
     exit 1
 fi
 
-# Protect from being run in system dirs
-if [[ "$CUSTOM_REPO" == "root" || "$CUSTOM_REPO" == "usr" ]]; then
-    echo "Error: create separated folder for repo"
-    exit 1
-fi
+echo "=== Copying packages from other repos ==="
 
 new_pkg_added=false
 

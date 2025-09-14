@@ -1,6 +1,6 @@
 # Maintainer: Croco Gene <crocogene[at]gmail[dot]com>
 pkgname=gzip-pigz-shim
-pkgver=0.1
+pkgver=1
 pkgrel=1
 pkgdesc='gzip to pigz compatibility package'
 url='https://github.com/crcgene/g-repo.git'

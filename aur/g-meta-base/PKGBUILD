@@ -1,0 +1,52 @@
+pkgname=g-meta-base
+pkgver=1
+pkgrel=1
+pkgdesc='Minimal package set based on Artix Linux'
+arch=('any')
+license=('GPL')
+depends=(
+  # very very base
+  'filesystem' 'gcc-libs' 'glibc' 'bash' 'dash'
+
+  # POSIX tools
+  'coreutils' 'file' 'findutils' 'gawk' 'procps-ng' 'sed' 'tar'
+  # grep alternative
+  'grep-ugrep-shim'
+
+  # standard linux toolset
+  'gettext' 'pciutils' 'psmisc' 'shadow' 'util-linux' 'bzip2' 'xz'
+  # gzip alternative
+  'gzip-pigz-shim'
+
+  # distro defined requirements
+  'pacman' 'artix-keyring' 'esysusers' 'etmpfiles'
+  #'licenses' 
+
+  # init system is dinit, elogind-less
+  'seatd-dinit'
+
+  # session/login tracker as a logind alternative
+  'turnstile-dinit'
+
+  # networking, ping, etc
+  'iputils' 'iproute2'
+
+  # base editor
+  'micro'
+
+)
+makedepends=('git')
+optdepends=('linux: bare metal support')
+source=()
+sha512sums=('SKIP')
+
+package() {
+    # pacman hooks
+    make -C alpm-hooks DESTDIR="${pkgdir}" install_base
+
+    # artix-service wrapper
+    make -C alpm-hooks DESTDIR="${pkgdir}" install_wrapper
+
+    # provide default symlink for PM file tracking
+    #ln -svf openrc-init "${pkgdir}"/usr/bin/init
+}
