@@ -29,7 +29,7 @@ for pkgdir in "$AUR_DIR"/* ; do
   echo "---- Processing package: $pkgname ----"
 
   # run makepkg -s, suppress errors and ignore exit code
-  ( cd "$pkgdir" && makepkg -s 2>/dev/null ) || true
+  ( cd "$pkgdir" && makepkg -s --skipchecksums 2>/dev/null ) || true
 
   pkgfiles=( "$pkgdir/${pkgname}-"*.pkg.tar.zst )
   if (( ${#pkgfiles[@]} == 0 )); then
