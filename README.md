@@ -1,1 +1,1 @@
-# custom archlinux repository
+# custom arch/artix linux repository
